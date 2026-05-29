@@ -1,0 +1,366 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="Kachi Blog">
+  <div class="layout-grid">
+    <div class="content-main">
+      <h1 class="page-title">ブログ記事一覧</h1>
+
+      {posts.length === 0 && (
+        <p class="empty">記事がまだありません。</p>
+      )}
+
+      <div class="post-list">
+        {posts.map((post) => (
+          <article class="post-card">
+            <a href={`/blog/${post.slug}`} class="post-link">
+              <div class="post-image">
+                <Image
+                  src={post.data.image}
+                  alt={post.data.title}
+                  width={260}
+                  height={160}
+                />
+              </div>
+              <div class="post-body">
+                <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('ja-JP', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                <h2 class="post-title">{post.data.title}</h2>
+                <p class="post-desc">{post.data.description}</p>
+                <div class="post-tags">
+                  {post.data.tags.map((tag) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="profile-avatar-wrap">
+          <img
+            src="/profile.svg"
+            alt="プロフィール画像"
+            class="profile-avatar"
+          />
+        </div>
+
+        <div class="profile-info">
+          <dl class="profile-list">
+            <dt>所属</dt>
+            <dd>東京都在住 情報学部4年 </br>（就職活動中）</dd>
+
+            <dt>研究</dt>
+            <dd>Tobii（視線計測装置）を用いた</br>web広告における視線運動の研究</dd>
+
+            <dt>興味・関心</dt>
+            <dd>インフラ、ネットワーク、サーバー構築</dd>
+          </dl>
+
+          <div class="profile-about">
+            <p class="profile-about-label">このブログについて</p>
+            <p class="profile-about-text">
+              Minecraftのマルチサーバーを構築したことをきっかけに、インフラやネットワークの世界に興味を持つ。これまではやりたいことをやるだけの開発が中心だったため、日々の学びを体系的な知識として整理・アウトプットするためにブログを開設した。
+            </p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  :global(main) {
+    max-width: 1240px;
+  }
+
+  .layout-grid {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* ── Post list ── */
+
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 1.75rem;
+    letter-spacing: -0.02em;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #eef4ff;
+  }
+
+  .empty {
+    color: #888;
+    text-align: center;
+    padding: 4rem;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .post-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: box-shadow 0.25s, transform 0.25s;
+    border: 1px solid #eee;
+  }
+
+  .post-card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.11);
+    transform: translateY(-2px);
+  }
+
+  .post-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .post-image {
+    flex-shrink: 0;
+    width: 220px;
+    background: #e8e8e8;
+    overflow: hidden;
+  }
+
+  .post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+  }
+
+  .post-card:hover .post-image img {
+    transform: scale(1.04);
+  }
+
+  .post-body {
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .post-date {
+    font-size: 0.78rem;
+    color: #aaa;
+    display: block;
+  }
+
+  .post-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+  }
+
+  .post-card:hover .post-title {
+    color: #2563eb;
+  }
+
+  .post-desc {
+    font-size: 0.875rem;
+    color: #666;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.65;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+  }
+
+  .tag {
+    background: #eef4ff;
+    color: #4f8ef7;
+    font-size: 0.72rem;
+    padding: 0.18rem 0.6rem;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+
+  /* ── Sidebar / Profile ── */
+
+  .sidebar {
+    position: sticky;
+    top: 5rem;
+  }
+
+  .profile-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+    padding-bottom: 1.5rem;
+  }
+
+  .profile-avatar-wrap {
+    background: linear-gradient(135deg, #eef4ff 0%, #dde8ff 100%);
+    padding: 1.75rem 0 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 12px rgba(79,142,247,0.2);
+  }
+
+  .profile-info {
+    padding: 1.25rem 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .profile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .profile-list dt {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #4f8ef7;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.1rem;
+  }
+
+  .profile-list dd {
+    font-size: 0.82rem;
+    color: #444;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .profile-about {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1rem;
+  }
+
+  .profile-about-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #4f8ef7;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.45rem;
+  }
+
+  .profile-about-text {
+    font-size: 0.8rem;
+    color: #555;
+    line-height: 1.75;
+  }
+
+  /* ── Responsive ── */
+
+  @media (max-width: 720px) {
+    .layout-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      position: static;
+      order: -1;
+    }
+
+    .profile-card {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding-bottom: 0;
+    }
+
+    .profile-avatar-wrap {
+      padding: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+    }
+
+    .profile-info {
+      padding: 1rem 1rem 1rem 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .post-link {
+      flex-direction: column;
+    }
+
+    .post-image {
+      width: 100%;
+      height: 180px;
+    }
+
+    .post-body {
+      padding: 1.1rem 1.2rem;
+    }
+
+    .post-title {
+      font-size: 1rem;
+    }
+
+    .page-title {
+      font-size: 1.3rem;
+    }
+
+    .profile-card {
+      flex-direction: column;
+    }
+
+    .profile-avatar-wrap {
+      width: 100%;
+      padding: 1.5rem 0 1.25rem;
+    }
+
+    .profile-info {
+      padding: 1rem 1rem 0;
+    }
+  }
+</style>

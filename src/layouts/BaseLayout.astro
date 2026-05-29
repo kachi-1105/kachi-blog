@@ -1,0 +1,157 @@
+---
+const { title = 'Kachi Blog' } = Astro.props;
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <nav class="nav-inner">
+        <a href="/" class="site-title">Kachi Blog</a>
+        <div class="nav-links">
+          <a href="/" class="nav-item">ホーム</a>
+          <a href="/category/tech" class="nav-item">技術</a>
+          <a href="/category/daily" class="nav-item">日常</a>
+          <div class="nav-divider"></div>
+          <a href="https://note.com/" target="_blank" rel="noopener noreferrer" class="nav-external">note ↗</a>
+          <a href="https://qiita.com/" target="_blank" rel="noopener noreferrer" class="nav-external">Qiita ↗</a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="nav-external">GitHub ↗</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p>© 2026 Kachi</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  header {
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 0.75rem 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .site-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #4f8ef7;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+  }
+
+  .site-title:hover {
+    color: #2563eb;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-item {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
+    text-decoration: none;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    transition: background 0.18s, color 0.18s;
+  }
+
+  .nav-item:hover {
+    background: #f0f4ff;
+    color: #2563eb;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 18px;
+    background: #ddd;
+    margin: 0 0.4rem;
+  }
+
+  .nav-external {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #888;
+    text-decoration: none;
+    padding: 0.28rem 0.7rem;
+    border: 1px solid #ddd;
+    border-radius: 100px;
+    transition: border-color 0.18s, color 0.18s, background 0.18s;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-external:hover {
+    border-color: #4f8ef7;
+    color: #4f8ef7;
+    background: #f0f4ff;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: #999;
+    font-size: 0.88rem;
+    border-top: 1px solid #e8e8e8;
+    margin-top: 4rem;
+    background: #fff;
+  }
+
+  @media (max-width: 640px) {
+    .nav-inner {
+      gap: 1rem;
+    }
+
+    .nav-links {
+      gap: 0.15rem;
+    }
+
+    .nav-item,
+    .nav-external {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.5rem;
+    }
+  }
+</style>
