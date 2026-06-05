@@ -31,7 +31,7 @@ const posts = allPosts
   <div class="post-list">
     {posts.map((post) => (
       <article class="post-card">
-        <a href={`/blog/${post.slug}`} class="post-link">
+        <a href={`${import.meta.env.BASE_URL}blog/${post.slug}`} class="post-link">
           <div class="post-image">
             <Image
               src={post.data.image}

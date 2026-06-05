@@ -11,11 +11,11 @@ const { title = 'Kachi Blog' } = Astro.props;
   <body>
     <header>
       <nav class="nav-inner">
-        <a href="/" class="site-title">Kachi Blog</a>
+        <a href={import.meta.env.BASE_URL} class="site-title">Kachi Blog</a>
         <div class="nav-links">
-          <a href="/" class="nav-item">ホーム</a>
-          <a href="/category/tech" class="nav-item">技術</a>
-          <a href="/category/daily" class="nav-item">日常</a>
+          <a href={import.meta.env.BASE_URL} class="nav-item">ホーム</a>
+          <a href={`${import.meta.env.BASE_URL}category/tech`} class="nav-item">技術</a>
+          <a href={`${import.meta.env.BASE_URL}category/daily`} class="nav-item">日常</a>
           <div class="nav-divider"></div>
           <a href="https://note.com/" target="_blank" rel="noopener noreferrer" class="nav-external">note ↗</a>
           <a href="https://qiita.com/" target="_blank" rel="noopener noreferrer" class="nav-external">Qiita ↗</a>
