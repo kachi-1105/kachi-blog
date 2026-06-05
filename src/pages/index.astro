@@ -20,7 +20,8 @@ const posts = (await getCollection('blog')).sort(
       <div class="post-list">
         {posts.map((post) => (
           <article class="post-card">
-            <a href={`${import.meta.env.BASE_URL}blog/${post.slug}`} class="post-link">
+            {/* BASE_URL と blog の間に / を追加 */}
+            <a href={`${import.meta.env.BASE_URL}/blog/${post.slug}`} class="post-link">
               <div class="post-image">
                 <Image
                   src={post.data.image}
@@ -54,8 +55,9 @@ const posts = (await getCollection('blog')).sort(
     <aside class="sidebar">
       <div class="profile-card">
         <div class="profile-avatar-wrap">
+          {/* BASE_URL と profile.svg の間に / を追加 */}
           <img
-            src={`${import.meta.env.BASE_URL}profile.svg`}
+            src={`${import.meta.env.BASE_URL}/profile.svg`}
             alt="プロフィール画像"
             class="profile-avatar"
           />
